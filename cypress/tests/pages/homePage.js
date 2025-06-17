@@ -5,7 +5,8 @@ class HomePage {
             emailField: '[data-cy="email"]',
             passwordField: '[data-cy="password"]',
             signInButton: "[novalidate=''] .text-white",
-            errorMessageLogin: '.text-red-500'
+            errorMessageLogin: '.text-red-500',
+            logoutButton: 'nav > .flex > :nth-child(2) > .undefined'
         }
         return selectors
     }
@@ -28,6 +29,12 @@ class HomePage {
         cy.get(this.selectorList().passwordField).type(password)
         cy.get(this.selectorList().signInButton).click()
         cy.get(this.selectorList().errorMessageLogin).contains("Invalid email or password")
+    }
+
+    logoutFromSystem() {
+        cy.get('body').contains("Logout")
+        cy.get(this.selectorList().logoutButton).click()
+        cy.get('body').contains("Login")
     }
 }
 

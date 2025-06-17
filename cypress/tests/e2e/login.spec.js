@@ -15,4 +15,10 @@ describe('Login Specs', () => {
     homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
   });
 
+  it('Try to Logout from system', () => {
+    homePage.acessHomePage()
+    homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
+    homePage.logoutFromSystem()
+  })
+
 });
