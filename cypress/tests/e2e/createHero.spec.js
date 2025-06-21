@@ -10,7 +10,7 @@ const createHeroPage = new CreateHeroPage
 
 describe('Create Hero Specs', () => {
 
-    it('Create a hero with valid fields', () => {
+    it('Create a hero with valid inputs', () => {
         homePage.acessHomePage()
         homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
         createHeroPage.acessCreateNewHeroPage()
