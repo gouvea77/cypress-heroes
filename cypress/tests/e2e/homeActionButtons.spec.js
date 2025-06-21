@@ -4,12 +4,15 @@ import HomePage from "../pages/homePage"
 const homePage = new HomePage
 
 describe('Action Buttons Specs', () => {
-    it('Verify if edit and delete action buttons is displayed without being logged in', () => {
-        homePage.acessHomePage()
-    });
 
     it('Try clicking the action buttons without being logged in', () => {
         homePage.acessHomePage()
+        homePage.clickLikeButton()
+        homePage.notLoggedUser()
+        homePage.clickHireButton()
+        homePage.notLoggedUser()
+        homePage.clickEditButton()
+        homePage.clickDeleteButton()
     });
 
     it('Try clicking like buttons while logged in', () => {
@@ -27,6 +30,19 @@ describe('Action Buttons Specs', () => {
         homePage.clickYesButton()
     });
 
+    it('Try clicking edit hero buttons while logged in', () => {
+        homePage.acessHomePage()
+        homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
+        homePage.clickEditButton()
+    });
 
+    it('Try clicking delete hero buttons while logged in', () => {
+        homePage.acessHomePage()
+        homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
+        homePage.clickDeleteButton()
+        homePage.clickNoButton()
+        homePage.clickDeleteButton()
+        homePage.clickYesButton()
+    });
 
 })

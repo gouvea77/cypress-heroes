@@ -57,14 +57,14 @@ class CreateHeroPage {
     }
 
     selectPower() {
-        const randomIndex = chance.integer({ min: 0, max: 8 }); // Total de opções visíveis
+        const randomIndex = chance.integer({ min: 0, max: 8 });
 
-        cy.get(this.selectorList().powerSelectField)    // seleciona o <select>
-            .find('option')                               // busca todas <option>
-            .eq(randomIndex)                              // pega uma aleatória
+        cy.get(this.selectorList().powerSelectField)
+            .find('option')
+            .eq(randomIndex)
             .then(option => {
-                const value = option.val();                 // pega o valor da opção
-                cy.get(this.selectorList().powerSelectField).select(value); // seleciona a opção
+                const value = option.val();
+                cy.get(this.selectorList().powerSelectField).select(value);
             });
     }
 
