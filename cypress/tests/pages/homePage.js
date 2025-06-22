@@ -1,6 +1,8 @@
 import Chance from 'chance';
+import EditHeroPage from './editHeroPage';
 
 const chance = new Chance();
+const editHeroPage = new EditHeroPage;
 
 class HomePage {
     selectorList() {
@@ -25,6 +27,10 @@ class HomePage {
 
     acessHomePage() {
         cy.visit('http://localhost:3000/').contains('Login')
+    }
+
+    verifyHomePage() {
+        cy.url().should('eq', 'http://localhost:3000/heroes')
     }
 
     loginWithValidUser(email, password) {
@@ -104,7 +110,6 @@ class HomePage {
                 cy.get(this.selectorList().modalMessageOpen)
                     .should('contain.text', 'Hire Hero?');
             }
-
         });
     }
 
@@ -124,6 +129,7 @@ class HomePage {
                     if (total > 0) {
                         const randomIndex = chance.integer({ min: 0, max: total - 1 });
                         cy.wrap($buttons[randomIndex]).click();
+                        cy.get(editHeroPage.selectorList().deleteHeroButton).should('contains.text', 'Delete Hero')
                     } else {
                         cy.log('No hire buttons found on the page.');
                     }
@@ -152,7 +158,6 @@ class HomePage {
                         cy.log('No hire buttons found on the page.');
                     }
                 });;
-
             }
         });
     }
