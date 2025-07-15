@@ -5,7 +5,7 @@ module.exports = defineConfig({
         setupNodeEvents(on, config) {
             // Configure event listeners if needed
         },
-        specPattern: 'cypress/tests/e2e/**/*.js',
+        specPattern: 'cypress/tests/e2e/**/*.spec.js',
         baseUrl: 'http://localhost:3000',
         supportFile: false
     }
