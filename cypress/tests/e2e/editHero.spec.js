@@ -8,7 +8,7 @@ const chance = new Chance();
 const homePage = new HomePage
 const editHeroPage = new EditHeroPage
 
-describe('Create Hero Specs', () => {
+describe('Edit Hero Specs', () => {
 
     it('Edit hero with valid inputs', () => {
         homePage.acessHomePage()
