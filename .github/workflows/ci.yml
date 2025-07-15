@@ -21,7 +21,7 @@ jobs:
       - name: Cypress Tests
         uses: cypress-io/github-action@v5
         with:
-            start: 'npm run dev'
+            start: 'npm run start:ci'
             build: 'npm run build'
             wait-on: 'http://localhost:3000'
             wait-on-timeout: 60
