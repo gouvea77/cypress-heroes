@@ -18,6 +18,9 @@ jobs:
         with:
             start: 'npm run dev'
             build: 'npm run build'
+            
+      - name: Wait for app to be ready
+        run: npx wait-on http://localhost:3000
 
       - uses: actions/upload-artifact@v4
         if: always()
