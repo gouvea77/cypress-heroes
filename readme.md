@@ -112,6 +112,9 @@ cd cypress-heroes
 # Install dependencies
 npm install
 
+# Start server
+npm run dev
+
 # Open Cypress test runner
 npx cypress open
 ```
