@@ -92,7 +92,7 @@ The full testing strategy is tracked and documented in a shared spreadsheet, cov
 - 💡 Improvement Suggestions
 - 📋 Test Run Reports
 
-📎 [Google Sheets - Full Documentation](https://docs.google.com/spreadsheets/d/1sYQRylVOZbIfz2e6ZqTkMWKqxa38D9BU/edit?gid=1153597396)
+📎 [Google Sheets - Full Documentation](https://docs.google.com/spreadsheets/d/17zrZjdGemXmdR8HZi-U3t7RqlG4b-69z/edit?gid=838253256#gid=838253256)
 
 ---
 
@@ -130,7 +130,7 @@ Select one of the `*.spec.js` files and execute it through the Cypress UI.
 
 Project developed for learning, professional growth, and showcasing QA automation skills.
 
-**Marcus Phillipe**  
+**Gabriel Gouvea**  
 🔗 [LinkedIn]((https://www.linkedin.com/in/gabrielgouvea77/))  
 
 
