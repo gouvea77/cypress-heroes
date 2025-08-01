@@ -1,10 +1,14 @@
 {
-    "loginSucess": {
-        "email": "admin@test.com",
-        "password": "test123"
-    },
-    "loginFail": {
-        "email": "test@test.com",
-        "password": "test"
-    }
+  "loginSucess": {
+    "email": "admin@test.com",
+    "password": "test123"
+  },
+  "loginFail": {
+    "email": "test@test.com",
+    "password": "test"
+  },
+  "user": {
+    "email": "",
+    "password": ""
+  }
 }

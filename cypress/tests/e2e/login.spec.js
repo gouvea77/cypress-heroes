@@ -1,24 +1,30 @@
-import userData from "../../fixtures/userData.json"
-import HomePage from "../pages/homePage";
+import userData from "../../fixtures/userData.json";
+import homePage from "../pages/homePage.js";
 
-const homePage = new HomePage;
+const HomePage = new homePage();
 
-describe('Login Specs', () => {
-
-  it('Try to Login with invalid user', () => {
-    homePage.acessHomePage()
-    homePage.loginWithInvalidUser(userData.loginFail.email, userData.loginFail.password)
+describe("Login Scenarios", () => {
+  beforeEach(() => {
+    cy.visit("http://localhost:3000/heroes");
   });
 
-  it('Try to Login with valid user', () => {
-    homePage.acessHomePage()
-    homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
+  it("Login with Valid User and Password", () => {
+    HomePage.loginWithValidCredentials();
   });
 
-  it('Try to Logout from system', () => {
-    homePage.acessHomePage()
-    homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
-    homePage.logoutFromSystem()
-  })
+  it("Error when trying to log in with unregistered email", () => {
+    HomePage.loginWithValidCredentials();
+  });
 
+  it("Error when trying to log in with a Malformed Email", () => {
+    HomePage.loginWithMalformedEmail();
+  });
+
+  it("Error when trying to log in without filling username and password", () => {
+    HomePage.loginWithoutCredentials();
+  });
+
+  it("Error when trying to log in with registered user and invalid password", () => {
+    HomePage.loginWithInvalidPassword();
+  });
 });

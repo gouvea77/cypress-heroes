@@ -1,174 +1,106 @@
-import Chance from 'chance';
-import EditHeroPage from './editHeroPage';
-
-const chance = new Chance();
-const editHeroPage = new EditHeroPage;
+import userData from "../../fixtures/userData.json";
 
 class HomePage {
-    selectorList() {
-        const selectors = {
-            loginButton: 'li > .undefined',
-            emailField: '[data-cy="email"]',
-            passwordField: '[data-cy="password"]',
-            signInButton: "[novalidate=''] .text-white",
-            errorMessageLogin: '.text-red-500',
-            logoutButton: 'nav > .flex > :nth-child(2) > .undefined',
-            likeButton: "[data-cy='like']",
-            saveButton: "[data-cy='money']",
-            modalMessageOpen: '.modal-container > .open',
-            modalYesButton: ".justify-end .bg-red-600",
-            modalNoButton: ".justify-end .border",
-            modalOkButton: ".justify-end .border",
-            editButton: "[data-cy='pencil']",
-            deleteButton: "[data-cy='trash']"
-        }
-        return selectors
-    }
+  selectorList() {
+    return {
+      likeButton: "[data-cy='like']",
+      hireButton: "[data-cy='money']", // Corrigido 'Buttom' para 'Button'
+      emailField: "[data-cy='email']",
+      passwordField: "[data-cy='password']",
+    };
+  }
 
-    acessHomePage() {
-        cy.visit('http://localhost:3000/').contains('Login')
-    }
+  tryLikeButton() {
+    cy.get(this.selectorList().likeButton).then(($buttons) => {
+      const randomIndex = Math.floor(Math.random() * $buttons.length);
+      cy.wrap($buttons[randomIndex]).click();
+    });
 
-    verifyHomePage() {
-        cy.url().should('eq', 'http://localhost:3000/heroes')
-    }
+    cy.get("body").then(($body) => {
+      if ($body.text().includes("Login")) {
+        cy.log("User is logged out");
+        cy.contains("You must log in to like.").should("be.visible");
+        cy.contains("button", "Ok").should("be.visible").click();
+      } else {
+        cy.log("User is logged in");
+      }
+    });
+  }
 
-    loginWithValidUser(email, password) {
-        cy.get(this.selectorList().loginButton).click()
-        cy.get(this.selectorList().emailField).type(email)
-        cy.get(this.selectorList().passwordField).type(password)
-        cy.get(this.selectorList().signInButton).click()
-        cy.get('body').contains("Logout")
-    }
+  tryHireHeroButton() {
+    cy.get(this.selectorList().hireButton).then(($buttons) => {
+      const randomIndex = Math.floor(Math.random() * $buttons.length);
+      cy.wrap($buttons[randomIndex]).click();
+    });
 
-    loginWithInvalidUser(email, password) {
-        cy.get(this.selectorList().loginButton).click()
-        cy.get(this.selectorList().emailField).type(email)
-        cy.get(this.selectorList().passwordField).type(password)
-        cy.get(this.selectorList().signInButton).click()
-        cy.get(this.selectorList().errorMessageLogin).contains("Invalid email or password")
-    }
+    cy.get("body").then(($body) => {
+      if ($body.text().includes("Login")) {
+        cy.log("User is logged out");
+        cy.contains("You must log in to hire this hero.").should("be.visible");
+        cy.contains("button", "Ok").should("be.visible").click();
+      } else {
+        cy.log("User is logged in");
+      }
+    });
+  }
 
-    logoutFromSystem() {
-        cy.get('body').contains("Logout")
-        cy.get(this.selectorList().logoutButton).click()
-        cy.get('body').contains("Login")
-    }
+  assertModalIsClosed() {
+    cy.get(".modal-container").should("not.exist");
+  }
 
-    notLoggedUser() {
-        cy.get(this.selectorList().modalMessageOpen).should('be.visible').contains("Ok")
-        cy.get(this.selectorList().modalOkButton).click()
-    }
+  loginWithValidCredentials() {
+    cy.contains("button", "Login").should("be.visible").click();
+    cy.get(this.selectorList().emailField)
+      .click()
+      .type(userData.loginSucess.email);
+    cy.get(this.selectorList().passwordField)
+      .click()
+      .type(userData.loginSucess.password);
+    cy.contains("button", "Sign in").should("be.visible").click();
+    cy.contains("Logout").should("be.visible");
+    cy.contains("Create New Hero").should("be.visible");
+  }
 
-    clickLikeButton() {
-        const clickRandomLikeButton = () => {
-            cy.get(this.selectorList().likeButton).then(($buttons) => {
-                const total = $buttons.length;
+  loginWithMalformedEmail() {
+    cy.contains("button", "Login").should("be.visible").click();
+    cy.get(this.selectorList().emailField).click().type("test@123");
+    cy.get(this.selectorList().passwordField)
+      .click()
+      .type(userData.loginSucess.password);
+    cy.contains("button", "Sign in").should("be.visible").click();
+    cy.contains("Email is not valid").should("be.visible");
+  }
 
-                if (total > 0) {
-                    const randomIndex = chance.integer({ min: 0, max: total - 1 });
-                    cy.wrap($buttons[randomIndex]).click();
-                } else {
-                    cy.log('No like buttons found on the page.');
-                }
-            });
-        };
+  loginWithInvalidEmail() {
+    cy.contains("button", "Login").should("be.visible").click();
+    cy.get(this.selectorList().emailField)
+      .click()
+      .type(userData.loginFail.email);
+    cy.get(this.selectorList().passwordField)
+      .click()
+      .type(userData.loginSucess.password);
+    cy.contains("button", "Sign in").should("be.visible").click();
+    cy.contains("Invalid email or password").should("be.visible");
+  }
 
-        cy.get('body').then(($body) => {
-            if ($body.text().includes('Login')) {
-                cy.log('User not logged in');
-                clickRandomLikeButton();
-                cy.get(this.selectorList().modalMessageOpen)
-                    .should('contain.text', 'You must log in to like.');
-            } else if ($body.text().includes('Logout')) {
-                cy.log('User logged in');
-                clickRandomLikeButton();
-            }
-        });
-    }
+  loginWithInvalidPassword() {
+    cy.contains("button", "Login").should("be.visible").click();
+    cy.get(this.selectorList().emailField)
+      .click()
+      .type(userData.loginSucess.email);
+    cy.get(this.selectorList().passwordField)
+      .click()
+      .type(userData.loginFail.password);
+    cy.contains("button", "Sign in").should("be.visible").click();
+    cy.contains("Invalid email or password").should("be.visible");
+  }
 
-    clickHireButton() {
-        cy.get(this.selectorList().saveButton).then(($buttons) => {
-            const total = $buttons.length;
-
-            if (total > 0) {
-                const randomIndex = chance.integer({ min: 0, max: total - 1 });
-                cy.wrap($buttons[randomIndex]).click();
-            } else {
-                cy.log('No hire buttons found on the page.');
-            }
-        });
-
-        cy.get('body').then(($body) => {
-
-            if ($body.text().includes('Login')) {
-                cy.log('User not logged in')
-                cy.get(this.selectorList().modalMessageOpen)
-                    .should('contain.text', 'You must log in to hire this hero.');
-            } else if ($body.text().includes('Logout')) {
-                cy.log('User logged in')
-                cy.get(this.selectorList().modalMessageOpen)
-                    .should('contain.text', 'Hire Hero?');
-            }
-        });
-    }
-
-    clickEditButton() {
-        cy.get('body').then(($body) => {
-            if ($body.text().includes('Login')) {
-                cy.log('User not logged in');
-                cy.get(this.selectorList().editButton).should('not.exist');
-                cy.log("Edit Button don't exist");
-
-            } else if ($body.text().includes('Logout')) {
-                cy.log('User logged in');
-                cy.get(this.selectorList().editButton).should('exist');
-                cy.get(this.selectorList().editButton).then(($buttons) => {
-                    const total = $buttons.length;
-
-                    if (total > 0) {
-                        const randomIndex = chance.integer({ min: 0, max: total - 1 });
-                        cy.wrap($buttons[randomIndex]).click();
-                        cy.get(editHeroPage.selectorList().deleteHeroButton).should('contains.text', 'Delete Hero')
-                    } else {
-                        cy.log('No hire buttons found on the page.');
-                    }
-                });
-            }
-        });
-    }
-
-    clickDeleteButton() {
-        cy.get('body').then(($body) => {
-            if ($body.text().includes('Login')) {
-                cy.log('User not logged in');
-                cy.get(this.selectorList().deleteButton).should('not.exist');
-                cy.log("Delete Button don't exist");
-
-            } else if ($body.text().includes('Logout')) {
-                cy.log('User logged in');
-                cy.get(this.selectorList().deleteButton).should('exist')
-                cy.get(this.selectorList().deleteButton).then(($buttons) => {
-                    const total = $buttons.length;
-
-                    if (total > 0) {
-                        const randomIndex = chance.integer({ min: 0, max: total - 1 });
-                        cy.wrap($buttons[randomIndex]).click();
-                    } else {
-                        cy.log('No hire buttons found on the page.');
-                    }
-                });;
-            }
-        });
-    }
-
-    clickNoButton() {
-        cy.get(this.selectorList().modalNoButton).click()
-    }
-
-    clickYesButton() {
-        cy.get(this.selectorList().modalYesButton).click()
-    }
+  loginWithoutCredentials() {
+    cy.contains("button", "Login").should("be.visible").click();
+    cy.contains("button", "Sign in").should("be.visible").click();
+    cy.contains("Email is required").should("be.visible");
+    cy.contains("Password is required").should("be.visible");
+  }
 }
 
-export default HomePage
+export default HomePage;

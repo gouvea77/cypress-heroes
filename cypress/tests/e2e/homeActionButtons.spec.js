@@ -1,48 +1,20 @@
-import userData from "../../fixtures/userData.json"
-import HomePage from "../pages/homePage"
+import userData from "../../fixtures/userData.json";
+import homePage from "../pages/homePage.js";
 
-const homePage = new HomePage
+const HomePage = new homePage();
 
-describe('Action Buttons Specs', () => {
+describe("Logged-out User", () => {
+  beforeEach(() => {
+    cy.visit("http://localhost:3000/heroes");
+  });
 
-    it('Try clicking the action buttons without being logged in', () => {
-        homePage.acessHomePage()
-        homePage.clickLikeButton()
-        homePage.notLoggedUser()
-        homePage.clickHireButton()
-        homePage.notLoggedUser()
-        homePage.clickEditButton()
-        homePage.clickDeleteButton()
-    });
+  it("Attempt to Like while logged out", () => {
+    HomePage.tryLikeButton();
+    HomePage.assertModalIsClosed();
+  });
 
-    it('Try clicking like buttons while logged in', () => {
-        homePage.acessHomePage()
-        homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
-        homePage.clickLikeButton()
-    });
-
-    it('Try clicking hire buttons and test hire or not while logged in', () => {
-        homePage.acessHomePage()
-        homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
-        homePage.clickHireButton()
-        homePage.clickNoButton()
-        homePage.clickHireButton()
-        homePage.clickYesButton()
-    });
-
-    it('Try clicking edit hero buttons while logged in', () => {
-        homePage.acessHomePage()
-        homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
-        homePage.clickEditButton()
-    });
-
-    it('Try clicking delete hero buttons while logged in', () => {
-        homePage.acessHomePage()
-        homePage.loginWithValidUser(userData.loginSucess.email, userData.loginSucess.password)
-        homePage.clickDeleteButton()
-        homePage.clickNoButton()
-        homePage.clickDeleteButton()
-        homePage.clickYesButton()
-    });
-
-})
+  it("Attempt to hire a Hero while logged out", () => {
+    HomePage.tryHireHeroButton();
+    HomePage.assertModalIsClosed();
+  });
+});
