@@ -1,4 +1,4 @@
-> ⚠️ Este repositório é um fork do [cypress-realworld-app](https://github.com/cypress-io/cypress-realworld-app), mantido pela equipe oficial da Cypress.  
+> ⚠️ Este repositório é um fork do [cypress-heroes]([https://github.com/cypress-io/cypress-realworld-app](https://github.com/cypress-io/cypress-heroes), mantido pela equipe oficial da Cypress.  
 > Abaixo estão minhas contribuições para estudo e demonstração prática de testes automatizados como QA Engineer.
 
 ---
